@@ -18,7 +18,8 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from models import Base  # Your SQLAlchemy base
+# Your SQLAlchemy base
+from models import Base  
 target_metadata = Base.metadata
 
 
