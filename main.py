@@ -3,6 +3,7 @@ from db.engine import Session
 from models import Gamer, Game, Prize, Token
 from models.redemption import Redemption
 from models.play import Play
+from models import games
 
 app = typer.Typer()
 
@@ -68,7 +69,7 @@ def menu():
             gamer = get_gamer(session, username)
             if gamer:
                 prize_id = int(typer.prompt("Enter prize ID"))
-                prize = session.query(Prize).get(prize_id)
+                prize = session.get(Prize, prize_id)
                 if prize and gamer.total_tokens() >= prize.token_cost:
                     redemption = Redemption(gamer_id=gamer.id, prize_id=prize.id)
                     session.add(redemption)
@@ -81,16 +82,28 @@ def menu():
             username = typer.prompt("Enter username")
             gamer = get_gamer(session, username)
             if gamer:
-                game_id = int(typer.prompt("Enter game ID"))
-                game = session.query(Game).get(game_id)
+                typer.echo("Choose a game:")
+                typer.echo("1. Guessing Game")
+                typer.echo("2. Rock, Paper, Scissors")
+                game_choice = typer.prompt("Enter game choice")
+
+                if game_choice == "1":
+                    game = session.query(Game).filter_by(name="Guessing Game").first()
+                    score = games.guessing_game()
+                elif game_choice == "2":
+                    game = session.query(Game).filter_by(name="Rock Paper Scissors").first()
+                    score = games.rock_paper_scissors()
+                else:
+                    typer.echo("Invalid game choice.")
+                    return
+
                 if game:
-                    score = int(typer.prompt("Enter score"))
-                    play = gamer.play_game(game, score)
+                    play = gamer.play_game(session, game, score)
                     session.add(play)
                     session.commit()
                     typer.echo(f"{username} played {game.name} with score {score}.")
                 else:
-                    typer.echo("Game not found.")
+                    typer.echo("Game not found in database.")
 
         elif choice == "0":
             typer.echo("Goodbye!")
@@ -155,6 +168,16 @@ def play_game(username: str, game_id: int, score: int):
         else:
             typer.echo("Game not found.")
     session.close()
+@app.command("create-game")
+def create_game(name: str, desc: str = "No description"):
+    """Create a new game."""
+    session = Session()
+    game = Game(name=name, description=desc)
+    session.add(game)
+    session.commit()
+    typer.echo(f"Game '{name}' added.")
+    session.close()
+
 
 if __name__ == "__main__":
     app()

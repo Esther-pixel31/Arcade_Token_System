@@ -1,6 +1,6 @@
 from .engine import Session, engine
 from models import Arcade, Gamer, Token, Game, Play, Prize, Redemption
-from models import Base  # ✅ This line is required
+from models import Base  
 
 
 def seed():
@@ -39,10 +39,11 @@ def seed():
     session.commit()
 
     # Create some Games
-    game1 = Game(name="Space Invaders", genre="Shooter", arcade=arcade1)
-    game2 = Game(name="Pac-Man", genre="Maze", arcade=arcade2)
-    session.add_all([game1, game2])
-    session.commit()
+    game1 = Game(name="Guessing Game", genre="Puzzle", arcade=arcade1)
+    game2 = Game(name="Rock Paper Scissors", genre="Strategy", arcade=arcade1)
+    game3 = Game(name="Space Invaders", genre="Shooter", arcade=arcade1)
+    game4 = Game(name="Pac-Man", genre="Maze", arcade=arcade2)
+    session.add_all([game1, game2, game3, game4])
 
     # Create some Plays
     play1 = Play(gamer=gamer1, game=game1, score=9000)

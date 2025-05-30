@@ -4,6 +4,7 @@ import datetime
 from models import Base
 
 
+
 class Game(Base):
     __tablename__ = 'games'
 
@@ -41,3 +42,5 @@ class Game(Base):
     def delete(self, session):
         session.delete(self)
         session.commit()
+
+    
