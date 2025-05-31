@@ -8,7 +8,7 @@ class Gamer(Base):
     __tablename__ = 'gamers'
 
     id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True)
+    username = Column(String, unique=True, nullable=False)
     high_score = Column(Integer, default=0)
 
     # Relationships

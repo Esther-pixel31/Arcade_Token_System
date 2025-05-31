@@ -9,7 +9,7 @@ class Game(Base):
     __tablename__ = 'games'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String, nullable=False, unique=True)
     genre = Column(String)
     arcade_id = Column(Integer, ForeignKey("arcades.id"))
 
