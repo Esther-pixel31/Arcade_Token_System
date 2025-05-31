@@ -11,6 +11,10 @@ A command-line-based arcade game management system built with Python, SQLAlchemy
 
 ---
 
+## Schema diagram
+
+-[DB diagram](https://dbdiagram.io/d/68345e5c6980ade2eb6a365a)
+
 ## 🛠️ Tech Stack
 
 - Python 3.8+
